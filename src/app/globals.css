@@ -15,7 +15,7 @@ body {
   color: #1f2937;
 }
 
-/* Utility classes - explicitly defined */
+/* Utility classes - explicitly defined with improved contrast */
 .bg-blue-600 { background-color: #2563eb !important; }
 .bg-blue-700 { background-color: #1d4ed8 !important; }
 .bg-blue-500 { background-color: #3b82f6 !important; }
@@ -83,7 +83,7 @@ body {
 .bg-white { background-color: #ffffff !important; }
 .bg-transparent { background-color: transparent !important; }
 
-/* Text colors */
+/* Text colors with improved contrast */
 .text-blue-600 { color: #2563eb !important; }
 .text-blue-700 { color: #1d4ed8 !important; }
 .text-blue-800 { color: #1e40af !important; }
@@ -213,7 +213,7 @@ body {
 .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
 .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
 .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
-.lg\:col-span-1 { grid-column: span 1 / span 1 !important; }
+.lg\:col-span-1 { grid-column: span 1 / span 3 !important; }
 .lg\:col-span-3 { grid-column: span 3 / span 3 !important; }
 
 /* Spacing */
@@ -372,7 +372,7 @@ body {
 .duration-500 { transition-duration: 500ms !important; }
 .duration-1000 { transition-duration: 1000ms !important; }
 
-/* Backdrop blur */
+/* Backdrop blur - improved for better visibility */
 .backdrop-blur-sm { backdrop-filter: blur(4px) !important; }
 .backdrop-blur-md { backdrop-filter: blur(12px) !important; }
 .backdrop-blur-xl { backdrop-filter: blur(24px) !important; }
@@ -505,3 +505,71 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
 }
+
+/* Additional utility classes for better button visibility */
+.bg-white\/80 { background-color: rgba(255, 255, 255, 0.8) !important; }
+.bg-white\/90 { background-color: rgba(255, 255, 255, 0.9) !important; }
+.bg-white\/95 { background-color: rgba(255, 255, 255, 0.95) !important; }
+
+.bg-gray-100\/50 { background-color: rgba(243, 244, 246, 0.5) !important; }
+.bg-gray-100\/80 { background-color: rgba(243, 244, 246, 0.8) !important; }
+
+.bg-blue-100\/50 { background-color: rgba(219, 234, 254, 0.5) !important; }
+.bg-blue-100\/80 { background-color: rgba(219, 234, 254, 0.8) !important; }
+
+.bg-purple-100\/50 { background-color: rgba(243, 232, 255, 0.5) !important; }
+.bg-purple-100\/80 { background-color: rgba(243, 232, 255, 0.8) !important; }
+
+.bg-indigo-100\/50 { background-color: rgba(224, 231, 255, 0.5) !important; }
+.bg-indigo-100\/80 { background-color: rgba(224, 231, 255, 0.8) !important; }
+
+.bg-green-100\/50 { background-color: rgba(220, 252, 231, 0.5) !important; }
+.bg-green-100\/80 { background-color: rgba(220, 252, 231, 0.8) !important; }
+
+.bg-orange-100\/50 { background-color: rgba(255, 237, 213, 0.5) !important; }
+.bg-orange-100\/80 { background-color: rgba(255, 237, 213, 0.8) !important; }
+
+.bg-slate-50\/30 { background-color: rgba(248, 250, 252, 0.3) !important; }
+.bg-slate-50\/50 { background-color: rgba(248, 250, 252, 0.5) !important; }
+
+.bg-blue-50\/30 { background-color: rgba(239, 246, 255, 0.3) !important; }
+.bg-blue-50\/50 { background-color: rgba(239, 246, 255, 0.5) !important; }
+
+.bg-indigo-50\/30 { background-color: rgba(238, 242, 255, 0.3) !important; }
+.bg-indigo-50\/50 { background-color: rgba(238, 242, 255, 0.5) !important; }
+
+/* Border utilities for better button definition */
+.border-white\/20 { border-color: rgba(255, 255, 255, 0.2) !important; }
+.border-white\/50 { border-color: rgba(255, 255, 255, 0.5) !important; }
+
+.border-blue-200\/50 { border-color: rgba(191, 219, 254, 0.5) !important; }
+.border-blue-300\/50 { border-color: rgba(147, 197, 253, 0.5) !important; }
+
+.border-green-200\/50 { border-color: rgba(187, 247, 208, 0.5) !important; }
+.border-green-300\/50 { border-color: rgba(134, 239, 172, 0.5) !important; }
+
+.border-purple-200\/50 { border-color: rgba(233, 213, 255, 0.5) !important; }
+.border-purple-300\/50 { border-color: rgba(216, 180, 254, 0.5) !important; }
+
+.border-gray-200\/50 { border-color: rgba(229, 231, 235, 0.5) !important; }
+.border-gray-300\/50 { border-color: rgba(209, 213, 219, 0.5) !important; }
+
+/* Hover states for better button interaction */
+.hover\:bg-white\/90:hover { background-color: rgba(255, 255, 255, 0.9) !important; }
+.hover\:bg-white\/95:hover { background-color: rgba(255, 255, 255, 0.95) !important; }
+
+.hover\:bg-gray-100\/80:hover { background-color: rgba(243, 244, 246, 0.8) !important; }
+.hover\:bg-gray-100\/90:hover { background-color: rgba(243, 244, 246, 0.9) !important; }
+
+.hover\:bg-blue-100\/80:hover { background-color: rgba(219, 234, 254, 0.8) !important; }
+.hover\:bg-purple-100\/80:hover { background-color: rgba(243, 232, 255, 0.8) !important; }
+.hover\:bg-indigo-100\/80:hover { background-color: rgba(224, 231, 255, 0.8) !important; }
+.hover\:bg-green-100\/80:hover { background-color: rgba(220, 252, 231, 0.8) !important; }
+.hover\:bg-orange-100\/80:hover { background-color: rgba(255, 237, 213, 0.8) !important; }
+
+.hover\:border-gray-300\/50:hover { border-color: rgba(209, 213, 219, 0.5) !important; }
+.hover\:border-gray-300\/80:hover { border-color: rgba(209, 213, 219, 0.8) !important; }
+
+.hover\:border-blue-300\/50:hover { border-color: rgba(147, 197, 253, 0.5) !important; }
+.hover\:border-green-300\/50:hover { border-color: rgba(134, 239, 172, 0.5) !important; }
+.hover\:border-purple-300\/50:hover { border-color: rgba(216, 180, 254, 0.5) !important; }

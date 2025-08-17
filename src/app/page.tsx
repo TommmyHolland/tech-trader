@@ -1,9 +1,9 @@
 'use client'
 
-import Link from 'next/link'
-import { Smartphone, Settings, Warehouse, User, LogOut, LogIn, UserPlus, Calculator, Package, TrendingUp, Shield, Zap, Globe, Users, ArrowRight, CheckCircle, Star, Award, Target, Rocket } from 'lucide-react'
-import { useAuth } from '@/contexts/AuthContext'
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useAuth } from '@/contexts/AuthContext'
+import { ArrowRight, CheckCircle, Star, Award, Target, Rocket, User, Calculator, Package, TrendingUp, Zap, Shield, Globe, Users, Smartphone, Settings, Warehouse } from 'lucide-react'
 
 export default function Home() {
   const { user, signOut, isAdmin, isWarehouse } = useAuth()
@@ -43,66 +43,48 @@ export default function Home() {
                 </h1>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <nav className="flex items-center space-x-6">
               {user ? (
-                <>
-                  <div className="flex items-center space-x-2 text-sm text-gray-600 bg-gray-100/50 px-3 py-2 rounded-full backdrop-blur-sm">
-                    <User className="w-4 h-4" />
-                    <span>{user.full_name}</span>
-                    <span className="text-xs bg-gradient-to-r from-blue-500 to-purple-500 text-white px-2 py-1 rounded-full capitalize font-medium">
-                      {user.role}
-                    </span>
-                  </div>
+                <div className="flex items-center space-x-4">
+                  <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                    {user.role === 'admin' ? 'Admin' : user.role === 'warehouse' ? 'Warehouse' : 'User'}
+                  </span>
                   <Link
-                    href="/user"
-                    className="text-gray-600 hover:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-gray-100/50 backdrop-blur-sm"
+                    href={user.role === 'admin' ? '/admin' : user.role === 'warehouse' ? '/warehouse' : '/user'}
+                    className="text-gray-700 hover:text-blue-600 transition-colors duration-300 font-medium"
                   >
                     Dashboard
                   </Link>
-                  {isAdmin && (
-                    <Link
-                      href="/admin"
-                      className="text-gray-600 hover:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-gray-100/50 backdrop-blur-sm"
-                    >
-                      Admin
-                    </Link>
-                  )}
-                  {isWarehouse && (
-                    <Link
-                      href="/warehouse"
-                      className="text-gray-600 hover:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 hover:bg-gray-100/50 backdrop-blur-sm"
-                    >
-                      Warehouse
-                    </Link>
-                  )}
                   <button
-                    onClick={handleSignOut}
-                    className="text-gray-600 hover:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all duration-300 hover:bg-gray-100/50 backdrop-blur-sm"
+                    onClick={signOut}
+                    className="text-gray-700 hover:text-red-600 transition-colors duration-300 font-medium"
                   >
-                    <LogOut className="w-4 h-4" />
-                    <span>Sign Out</span>
+                    Sign Out
                   </button>
-                </>
+                </div>
               ) : (
-                <>
-                  <Link
-                    href="/login"
-                    className="text-gray-600 hover:text-gray-900 px-4 py-2 rounded-lg text-sm font-medium flex items-center space-x-2 transition-all duration-300 hover:bg-gray-100/50 backdrop-blur-sm"
-                  >
-                    <LogIn className="w-4 h-4" />
-                    <span>Sign In</span>
-                  </Link>
+                <div className="flex items-center space-x-4">
                   <Link
                     href="/register"
-                    className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 transition-all duration-500 text-sm font-medium flex items-center space-x-2 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 group"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105 group"
                   >
-                    <UserPlus className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
-                    <span>Get Started</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                    <span className="flex items-center gap-2">
+                      Get Started
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                    </span>
                   </Link>
-                </>
+                  <Link
+                    href="/login"
+                    className="bg-white text-gray-900 border-2 border-gray-300 px-6 py-3 rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105 group"
+                  >
+                    <span className="flex items-center gap-2">
+                      Sign In
+                      <User className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
+                    </span>
+                  </Link>
+                </div>
               )}
-            </div>
+            </nav>
           </div>
         </div>
       </header>
@@ -400,27 +382,21 @@ export default function Home() {
               <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
                 Join thousands of successful tech traders who are already maximizing their profits with our platform.
               </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Link
-                  href="/register"
-                  className="group bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-10 py-5 rounded-2xl hover:from-blue-700 hover:via-purple-700 hover:to-indigo-700 transition-all duration-500 text-xl font-bold shadow-2xl hover:shadow-3xl transform hover:-translate-y-2 hover:scale-105 relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  <span className="relative flex items-center space-x-3">
-                    <Rocket className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
-                    <span>Start Trading Today</span>
-                    <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-2xl font-semibold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:scale-105 group">
+                  <span className="flex items-center gap-2">
+                    <Rocket className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+                    Start Trading Today
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                   </span>
-                </Link>
-                <Link
-                  href="/login"
-                  className="bg-white/80 backdrop-blur-xl text-gray-900 px-10 py-5 rounded-2xl border-2 border-gray-200/50 hover:border-gray-300/50 transition-all duration-500 text-xl font-bold shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 group"
-                >
-                  <span className="flex items-center space-x-3">
-                    <User className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
-                    <span>Sign In</span>
+                </button>
+                <button className="bg-white text-gray-900 border-2 border-gray-300 px-8 py-4 rounded-2xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 hover:scale-105 group">
+                  <span className="flex items-center gap-2">
+                    <User className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+                    Sign In
+                    <Target className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
                   </span>
-                </Link>
+                </button>
               </div>
             </div>
           </section>
