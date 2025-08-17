@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Calculator, Smartphone, Package } from 'lucide-react'
+import { ArrowLeft, Calculator, Smartphone, Package, Home, BarChart3, Settings, User, Bell, Search, Plus, Filter, Download, Upload } from 'lucide-react'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -60,6 +60,7 @@ export default function UserDashboard() {
   const [selectedDefects, setSelectedDefects] = useState<string[]>([])
   const [selectedParts, setSelectedParts] = useState<Part[]>([])
   const [deviceCondition, setDeviceCondition] = useState<'excellent' | 'good' | 'fair' | 'poor'>('good')
+  const [activeTab, setActiveTab] = useState<'assessment' | 'history' | 'settings'>('assessment')
 
   const calculateDeviceValue = () => {
     if (!selectedDevice) return 0
@@ -119,202 +120,334 @@ export default function UserDashboard() {
   return (
     <ProtectedRoute requiredRole="user">
       <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <header className="bg-white shadow-sm">
+        {/* Top Navigation */}
+        <header className="bg-white shadow-sm border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center py-6">
+            <div className="flex justify-between items-center py-4">
               <div className="flex items-center space-x-4">
                 <Link
                   href="/"
-                  className="text-gray-600 hover:text-gray-900 flex items-center space-x-2"
+                  className="text-gray-600 hover:text-gray-900 flex items-center space-x-2 transition-colors"
                 >
                   <ArrowLeft className="w-5 h-5" />
                   <span>Back to Home</span>
                 </Link>
-                <h1 className="text-3xl font-bold text-gray-900">User Dashboard</h1>
+                <div className="h-6 w-px bg-gray-300"></div>
+                <h1 className="text-2xl font-bold text-gray-900">User Dashboard</h1>
               </div>
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
-                <span>Welcome, {user?.full_name}</span>
+              <div className="flex items-center space-x-4">
+                <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                  <Bell className="w-5 h-5" />
+                </button>
+                <div className="flex items-center space-x-2 text-sm text-gray-600">
+                  <User className="w-4 h-4" />
+                  <span>{user?.full_name}</span>
+                </div>
               </div>
             </div>
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Device Assessment Panel */}
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-lg shadow p-6 mb-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
-                  <Smartphone className="w-6 h-6 mr-3 text-blue-600" />
-                  Device Assessment
-                </h2>
-                
-                {/* Device Selection */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Select Device
-                  </label>
-                  <select
-                    className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    value={selectedDevice?.id || ''}
-                    onChange={(e) => {
-                      const device = sampleDevices.find(d => d.id === e.target.value)
-                      setSelectedDevice(device || null)
-                    }}
-                  >
-                    <option value="">Choose a device...</option>
-                    {sampleDevices.map(device => (
-                      <option key={device.id} value={device.id}>
-                        {device.brand} {device.model}
-                      </option>
-                    ))}
-                  </select>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Quick Stats */}
+          <div className="grid md:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Calculator className="w-5 h-5 text-blue-600" />
+                  </div>
                 </div>
-
-                {/* Device Condition */}
-                {selectedDevice && (
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Device Condition
-                    </label>
-                    <div className="grid grid-cols-4 gap-3">
-                      {(['excellent', 'good', 'fair', 'poor'] as const).map(condition => (
-                        <button
-                          key={condition}
-                          onClick={() => setDeviceCondition(condition)}
-                          className={`p-3 rounded-md border text-sm font-medium capitalize ${
-                            deviceCondition === condition
-                              ? 'border-blue-500 bg-blue-50 text-blue-700'
-                              : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                          }`}
-                        >
-                          {condition}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Defect Selection */}
-                {selectedDevice && (
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Select Defects
-                    </label>
-                    <div className="grid grid-cols-2 gap-3">
-                      {sampleDefects.map(defect => (
-                        <label key={defect.id} className="flex items-center space-x-3">
-                          <input
-                            type="checkbox"
-                            checked={selectedDefects.includes(defect.id)}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setSelectedDefects([...selectedDefects, defect.id])
-                              } else {
-                                setSelectedDefects(selectedDefects.filter(id => id !== defect.id))
-                              }
-                            }}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                          />
-                          <span className="text-sm text-gray-700 capitalize">
-                            {defect.name}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Assessments</p>
+                  <p className="text-2xl font-bold text-gray-900">24</p>
+                </div>
               </div>
-
-              {/* Parts Selection */}
-              {selectedDevice && (
-                <div className="bg-white rounded-lg shadow p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                    <Package className="w-5 h-5 mr-2 text-green-600" />
-                    Select Repair Parts
-                  </h3>
-                  <div className="space-y-4">
-                    {['Screen Assembly', 'Battery', 'Camera Module'].map(partName => {
-                      const partOptions = sampleParts.filter(p => p.name === partName)
-                      return (
-                        <div key={partName} className="border border-gray-200 rounded-lg p-4">
-                          <h4 className="font-medium text-gray-900 mb-3">{partName}</h4>
-                          <div className="grid grid-cols-3 gap-3">
-                            {partOptions.map(part => (
-                              <button
-                                key={part.id}
-                                onClick={() => handlePartSelection(part)}
-                                className={`p-3 rounded-md border text-sm font-medium ${
-                                  selectedParts.some(p => p.name === part.name && p.quality === part.quality)
-                                    ? 'border-green-500 bg-green-50 text-green-700'
-                                    : 'border-gray-300 text-gray-700 hover:bg-gray-50'
-                                }`}
-                              >
-                                <div className="capitalize">{part.quality}</div>
-                                <div className="font-bold">${part.price}</div>
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      )
-                    })}
+            </div>
+            
+            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                    <Package className="w-5 h-5 text-green-600" />
                   </div>
                 </div>
-              )}
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Parts Ordered</p>
+                  <p className="text-2xl font-bold text-gray-900">12</p>
+                </div>
+              </div>
             </div>
-
-            {/* Results Panel */}
-            <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg shadow p-6 sticky top-8">
-                <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-                  <Calculator className="w-5 h-5 mr-2 text-purple-600" />
-                  Assessment Results
-                </h3>
-                
-                {selectedDevice ? (
-                  <div className="space-y-4">
-                    <div className="bg-blue-50 rounded-lg p-4">
-                      <div className="text-sm text-blue-600 font-medium">Device Value</div>
-                      <div className="text-2xl font-bold text-blue-900">
-                        ${calculateDeviceValue()}
-                      </div>
-                    </div>
-                    
-                    <div className="bg-red-50 rounded-lg p-4">
-                      <div className="text-sm text-red-600 font-medium">Repair Cost</div>
-                      <div className="text-2xl font-bold text-red-900">
-                        ${calculateRepairCost()}
-                      </div>
-                    </div>
-                    
-                    <div className="bg-green-50 rounded-lg p-4">
-                      <div className="text-sm text-green-600 font-medium">Potential Profit</div>
-                      <div className="text-2xl font-bold text-green-900">
-                        ${calculateProfit()}
-                      </div>
-                    </div>
-                    
-                    {selectedParts.length > 0 && (
-                      <button
-                        onClick={handlePurchaseParts}
-                        className="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-medium hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
-                      >
-                        <Package className="w-5 h-5" />
-                        <span>Purchase Parts</span>
-                      </button>
-                    )}
+            
+            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <BarChart3 className="w-5 h-5 text-purple-600" />
                   </div>
-                ) : (
-                  <div className="text-center text-gray-500 py-8">
-                    <Calculator className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                    <p>Select a device to see assessment results</p>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Total Profit</p>
+                  <p className="text-2xl font-bold text-gray-900">$2,847</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                    <Smartphone className="w-5 h-5 text-orange-600" />
                   </div>
-                )}
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Devices Assessed</p>
+                  <p className="text-2xl font-bold text-gray-900">8</p>
+                </div>
               </div>
             </div>
           </div>
-        </main>
+
+          {/* Main Content */}
+          <div className="grid lg:grid-cols-4 gap-8">
+            {/* Left Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <nav className="space-y-2">
+                  <button
+                    onClick={() => setActiveTab('assessment')}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                      activeTab === 'assessment'
+                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                        : 'text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    <Calculator className="w-5 h-5" />
+                    <span className="font-medium">Device Assessment</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => setActiveTab('history')}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                      activeTab === 'history'
+                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                        : 'text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    <BarChart3 className="w-5 h-5" />
+                    <span className="font-medium">Assessment History</span>
+                  </button>
+                  
+                  <button
+                    onClick={() => setActiveTab('settings')}
+                    className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                      activeTab === 'settings'
+                        ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                        : 'text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    <Settings className="w-5 h-5" />
+                    <span className="font-medium">Settings</span>
+                  </button>
+                </nav>
+              </div>
+            </div>
+
+            {/* Main Content Area */}
+            <div className="lg:col-span-3">
+              {activeTab === 'assessment' && (
+                <div className="space-y-6">
+                  {/* Device Assessment Panel */}
+                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-2xl font-semibold text-gray-900 flex items-center">
+                        <Smartphone className="w-6 h-6 mr-3 text-blue-600" />
+                        Device Assessment
+                      </h2>
+                      <div className="flex items-center space-x-2">
+                        <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                          <Download className="w-4 h-4" />
+                        </button>
+                        <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                          <Upload className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Device Selection */}
+                    <div className="mb-6">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Select Device
+                      </label>
+                      <select
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        value={selectedDevice?.id || ''}
+                        onChange={(e) => {
+                          const device = sampleDevices.find(d => d.id === e.target.value)
+                          setSelectedDevice(device || null)
+                        }}
+                      >
+                        <option value="">Choose a device...</option>
+                        {sampleDevices.map(device => (
+                          <option key={device.id} value={device.id}>
+                            {device.brand} {device.model}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Device Condition */}
+                    {selectedDevice && (
+                      <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Device Condition
+                        </label>
+                        <div className="grid grid-cols-4 gap-3">
+                          {(['excellent', 'good', 'fair', 'poor'] as const).map(condition => (
+                            <button
+                              key={condition}
+                              onClick={() => setDeviceCondition(condition)}
+                              className={`p-3 rounded-lg border text-sm font-medium capitalize transition-colors ${
+                                deviceCondition === condition
+                                  ? 'border-blue-500 bg-blue-50 text-blue-700'
+                                  : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                              }`}
+                            >
+                              {condition}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Defect Selection */}
+                    {selectedDevice && (
+                      <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Select Defects
+                        </label>
+                        <div className="grid grid-cols-2 gap-3">
+                          {sampleDefects.map(defect => (
+                            <label key={defect.id} className="flex items-center space-x-3 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                              <input
+                                type="checkbox"
+                                checked={selectedDefects.includes(defect.id)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedDefects([...selectedDefects, defect.id])
+                                  } else {
+                                    setSelectedDefects(selectedDefects.filter(id => id !== defect.id))
+                                  }
+                                }}
+                                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                              />
+                              <span className="text-sm text-gray-700 capitalize">
+                                {defect.name}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Parts Selection */}
+                  {selectedDevice && (
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                      <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                        <Package className="w-5 h-5 mr-2 text-green-600" />
+                        Select Repair Parts
+                      </h3>
+                      <div className="space-y-4">
+                        {['Screen Assembly', 'Battery', 'Camera Module'].map(partName => {
+                          const partOptions = sampleParts.filter(p => p.name === partName)
+                          return (
+                            <div key={partName} className="border border-gray-200 rounded-lg p-4">
+                              <h4 className="font-medium text-gray-900 mb-3">{partName}</h4>
+                              <div className="grid grid-cols-3 gap-3">
+                                {partOptions.map(part => (
+                                  <button
+                                    key={part.id}
+                                    onClick={() => handlePartSelection(part)}
+                                    className={`p-3 rounded-lg border text-sm font-medium transition-colors ${
+                                      selectedParts.some(p => p.name === part.name && p.quality === part.quality)
+                                        ? 'border-green-500 bg-green-50 text-green-700'
+                                        : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                                    }`}
+                                  >
+                                    <div className="capitalize">{part.quality}</div>
+                                    <div className="font-bold">${part.price}</div>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'history' && (
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-6">Assessment History</h2>
+                  <p className="text-gray-600">Your previous device assessments will appear here.</p>
+                </div>
+              )}
+
+              {activeTab === 'settings' && (
+                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                  <h2 className="text-2xl font-semibold text-gray-900 mb-6">Settings</h2>
+                  <p className="text-gray-600">Manage your account preferences and settings here.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Results Panel - Fixed Position */}
+          {selectedDevice && (
+            <div className="fixed bottom-6 right-6 w-80 bg-white rounded-xl shadow-xl border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <Calculator className="w-5 h-5 mr-2 text-purple-600" />
+                Assessment Results
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="bg-blue-50 rounded-lg p-4">
+                  <div className="text-sm text-blue-600 font-medium">Device Value</div>
+                  <div className="text-2xl font-bold text-blue-900">
+                    ${calculateDeviceValue()}
+                  </div>
+                </div>
+                
+                <div className="bg-red-50 rounded-lg p-4">
+                  <div className="text-sm text-red-600 font-medium">Repair Cost</div>
+                  <div className="text-2xl font-bold text-red-900">
+                    ${calculateRepairCost()}
+                  </div>
+                </div>
+                
+                <div className="bg-green-50 rounded-lg p-4">
+                  <div className="text-sm text-green-600 font-medium">Potential Profit</div>
+                  <div className="text-2xl font-bold text-green-900">
+                    ${calculateProfit()}
+                  </div>
+                </div>
+                
+                {selectedParts.length > 0 && (
+                  <button
+                    onClick={handlePurchaseParts}
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
+                  >
+                    <Package className="w-5 h-5" />
+                    <span>Purchase Parts</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </ProtectedRoute>
   )
