@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Smartphone, Settings, Warehouse, User, LogOut, LogIn, UserPlus, Calculator, Package, TrendingUp, Shield, Zap, Globe, Users, BarChart3 } from 'lucide-react'
+import { Smartphone, Settings, Warehouse, User, LogOut, LogIn, UserPlus, Calculator, Package, TrendingUp, Shield, Zap, Globe, Users } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
 export default function Home() {
@@ -146,7 +146,7 @@ export default function Home() {
                 What Does Tech Trader Do?
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                We're revolutionizing the electronic device trading industry with cutting-edge tools and real-time data.
+                We&apos;re revolutionizing the electronic device trading industry with cutting-edge tools and real-time data.
               </p>
             </div>
             

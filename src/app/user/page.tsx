@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Calculator, Smartphone, Package, Home, BarChart3, Settings, User, Bell, Search, Plus, Filter, Download, Upload } from 'lucide-react'
+import { ArrowLeft, Calculator, Smartphone, Package, BarChart3, Settings, User, Bell, Download, Upload } from 'lucide-react'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
 import { useAuth } from '@/contexts/AuthContext'
 
