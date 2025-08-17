@@ -43,8 +43,6 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'devices' | 'parts'>('devices')
   const [editingDevice, setEditingDevice] = useState<Device | null>(null)
   const [editingPart, setEditingPart] = useState<Part | null>(null)
-  const [showAddDevice, setShowAddDevice] = useState(false)
-  const [showAddPart, setShowAddPart] = useState(false)
 
   const handleDeviceUpdate = (device: Device) => {
     // This would update the database
@@ -56,18 +54,6 @@ export default function AdminDashboard() {
     // This would update the database
     console.log('Updating part:', part)
     setEditingPart(null)
-  }
-
-  const handleAddDevice = (device: Omit<Device, 'id' | 'lastUpdated'>) => {
-    // This would add to the database
-    console.log('Adding device:', device)
-    setShowAddDevice(false)
-  }
-
-  const handleAddPart = (part: Omit<Part, 'id' | 'lastUpdated'>) => {
-    // This would add to the database
-    console.log('Adding part:', part)
-    setShowAddPart(false)
   }
 
   const handleBulkUpload = () => {
@@ -153,7 +139,7 @@ export default function AdminDashboard() {
             <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
               <h2 className="text-xl font-semibold text-gray-900">Device Pricing Management</h2>
               <button
-                onClick={() => setShowAddDevice(true)}
+                onClick={() => setEditingDevice(null)}
                 className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center space-x-2"
               >
                 <Plus className="w-4 h-4" />
@@ -225,7 +211,7 @@ export default function AdminDashboard() {
             <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
               <h2 className="text-xl font-semibold text-gray-900">Parts Management</h2>
               <button
-                onClick={() => setShowAddPart(true)}
+                onClick={() => setEditingPart(null)}
                 className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors flex items-center space-x-2"
               >
                 <Plus className="w-4 h-4" />

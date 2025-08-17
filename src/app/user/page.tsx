@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Calculator, Smartphone, DollarSign, Package, TrendingUp } from 'lucide-react'
+import { ArrowLeft, Calculator, Smartphone, Package } from 'lucide-react'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -73,7 +73,7 @@ export default function UserDashboard() {
       'Galaxy S23 Ultra': 1199,
     }
     
-    let baseValue = baseValues[selectedDevice.model] || 500
+    const baseValue = baseValues[selectedDevice.model] || 500
     
     // Apply defect impact
     const defectImpact = selectedDefects.reduce((total, defectId) => {

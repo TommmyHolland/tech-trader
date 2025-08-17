@@ -6,8 +6,8 @@ import { User, supabase } from '@/lib/supabase'
 interface AuthContextType {
   user: User | null
   loading: boolean
-  signIn: (email: string, password: string) => Promise<{ error: any }>
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error: any }>
+  signIn: (email: string, password: string) => Promise<{ error: Error | null }>
+  signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>
   signOut: () => Promise<void>
   isAdmin: boolean
   isWarehouse: boolean
@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
       return { error }
     } catch (error) {
-      return { error }
+      return { error: error instanceof Error ? error : new Error('Unknown error') }
     }
   }
 
@@ -101,7 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       return { error: null }
     } catch (error) {
-      return { error }
+      return { error: error instanceof Error ? error : new Error('Unknown error') }
     }
   }
 

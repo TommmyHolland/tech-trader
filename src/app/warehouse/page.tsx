@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Warehouse, Package, Truck, CheckCircle, Clock, AlertCircle, Search, Filter } from 'lucide-react'
+import { ArrowLeft, Package, Truck, CheckCircle, Clock, Search, Filter } from 'lucide-react'
 
 interface Order {
   id: string
